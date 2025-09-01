@@ -14,6 +14,19 @@ app.use(helmet());
 app.use(cors());
 app.use(morgan('combined'));
 
+// Importar middlewares y controladores
+const { uploadSingle, handleUploadError } = require('./middleware/upload');
+const { validateQrGenerate } = require('./middleware/validation');
+const qrController = require('./controllers/qrController');
+
+// Rutas de la API
+app.post('/api/qr/generate', 
+  uploadSingle,
+  handleUploadError,
+  validateQrGenerate,
+  qrController.generateQR
+);
+
 // Parsear JSON y URL encoded
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
