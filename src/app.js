@@ -10,9 +10,29 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middlewares de seguridad y logging
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "blob:"], // ← ESTA ES LA LÍNEA CLAVE
+      connectSrc: ["'self'"],
+      fontSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"],
+    },
+  },
+}));
 app.use(cors());
 app.use(morgan('combined'));
+
+// Servir archivos estáticos
+app.use(express.static(path.join(__dirname, '../public')));
+// Servir archivos estáticos (para ver QRs generados)
+app.use('/generated', express.static(path.join(__dirname, '../generated')));
+
 
 // Importar middlewares y controladores
 const { uploadSingle, handleUploadError } = require('./middleware/upload');
@@ -31,8 +51,6 @@ app.post('/api/qr/generate',
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir archivos estáticos (para ver QRs generados)
-app.use('/generated', express.static(path.join(__dirname, '../generated')));
 
 // Ruta de health check
 app.get('/health', (req, res) => {
