@@ -23,32 +23,7 @@ class ImageProcessor {
     }
   }
 
-  /**
-   * Combina QR con logo para formatos raster (PNG, JPG, WEBP)
-   */
-  // async combineQrWithLogo(qrBuffer, logoPath, options = {}) {
-  //   try {
-  //     const qrSize = options.size || 300;
-  //     const logoSizePercent = options.logoSize || 0.2;
-  //     const logoSize = Math.round(qrSize * logoSizePercent);
-
-  //     // Procesar logo
-  //     const logoBuffer = await this.processLogo(logoPath, logoSize);
-
-  //     // Combinar QR con logo
-  //     const combinedBuffer = await sharp(qrBuffer)
-  //       .composite([{
-  //         input: logoBuffer,
-  //         gravity: 'center'
-  //       }])
-  //       .toBuffer();
-
-  //     return combinedBuffer;
-  //   } catch (error) {
-  //     throw new Error(`Error combinando QR con logo: ${error.message}`);
-  //   }
-  // }
-
+  
   /**
  * Combina QR con logo para formatos raster (PNG, JPG, WEBP)
  */
@@ -98,34 +73,6 @@ async combineQrWithLogo(qrBuffer, logoPath, options = {}) {
     throw new Error(`Error combinando QR con logo: ${error.message}`);
   }
 }
-  /**
-   * Inserta logo en SVG como imagen embebida
-   */
-  // async insertLogoInSVG(svgString, logoPath, options = {}) {
-  //   try {
-  //     const qrSize = options.size || 300;
-  //     const logoSizePercent = options.logoSize || 0.2;
-  //     const logoSize = Math.round(qrSize * logoSizePercent);
-
-  //     // Convertir logo a base64
-  //     const logoBuffer = await fs.readFile(logoPath);
-  //     const logoBase64 = logoBuffer.toString('base64');
-  //     const logoMime = this.getMimeType(logoPath);
-
-  //     // Calcular posición centrada
-  //     const logoPosition = (qrSize - logoSize) / 2;
-
-  //     // Insertar logo en SVG
-  //     const logoElement = `<image x="${logoPosition}" y="${logoPosition}" width="${logoSize}" height="${logoSize}" href="data:${logoMime};base64,${logoBase64}"/>`;
-
-  //     // Buscar el cierre del SVG y insertar antes
-  //     const modifiedSVG = svgString.replace('</svg>', `  ${logoElement}\n</svg>`);
-
-  //     return modifiedSVG;
-  //   } catch (error) {
-  //     throw new Error(`Error insertando logo en SVG: ${error.message}`);
-  //   }
-  // }
 
   /**
  * Inserta logo en SVG como imagen embebida

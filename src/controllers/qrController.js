@@ -40,7 +40,6 @@ async function generateQR(req, res) {
   let logoPath = null;
   
   try {
-    // Obtener datos validados
   // Obtener datos validados
 const { text, size, logoSize, logoPaddingWidth, logoPaddingHeight, format, quality } = req.validatedData;
 const hasLogo = req.file !== undefined;

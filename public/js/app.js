@@ -170,31 +170,6 @@ class QRGenerator {
         return `qr_${timestamp}.${format}`;
     }
 
-    // async showPreview() {
-    //     const format = document.getElementById('format').value;
-    //     const url = URL.createObjectURL(this.currentBlob);
-
-    //     // Limpiar preview anterior
-    //     this.qrPreview.innerHTML = '';
-
-    //     if (format === 'svg') {
-    //         // Para SVG, mostrar como objeto
-    //         const svgText = await this.currentBlob.text();
-    //         this.qrPreview.innerHTML = svgText;
-    //     } else {
-    //         // Para imágenes raster, mostrar como img
-    //         const img = document.createElement('img');
-    //         img.src = url;
-    //         img.alt = 'Código QR generado';
-    //         img.style.maxWidth = '100%';
-    //         img.style.height = 'auto';
-    //         this.qrPreview.appendChild(img);
-    //     }
-
-    //     // Mostrar resultado y botón de descarga
-    //     this.showResult();
-    //     this.showDownloadButton();
-    // }
     async showPreview() {
     try {
         const format = document.getElementById('format').value;
