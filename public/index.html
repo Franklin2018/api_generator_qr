@@ -1,4 +1,3 @@
- 
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,82 +13,230 @@
             <p>Crea códigos QR personalizados con tu logo</p>
         </header>
 
-        <div class="form-section">
-            <form id="qrForm" enctype="multipart/form-data" onsubmit="return validateForm(event)">
-                <div class="form-group">
-                    <label for="text">Texto o URL *</label>
-                    <input type="text" id="text" name="text" required 
-                           placeholder="https://ejemplo.com">
-                </div>
+                <!-- Navigation Tabs -->
+        <nav class="tab-navigation">
+            <button class="tab-btn active" data-tab="generator">
+                🚀 Generador
+            </button>
+            <button class="tab-btn" data-tab="history">
+                📋 Historial
+            </button>
+            <button class="tab-btn" data-tab="analytics">
+                📊 Análisis
+            </button>
+        </nav>
 
-                <div class="form-row">
+        <!-- Generator Tab -->
+        <div id="generator-tab" class="tab-content active">
+            <div class="form-section">
+                <form id="qrForm" enctype="multipart/form-data" onsubmit="return validateForm(event)">
                     <div class="form-group">
-                        <label for="size">Tamaño (px)</label>
-                        <input type="number" id="size" name="size" 
-                               value="400" min="100" max="1000">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="format">Formato</label>
-                        <select id="format" name="format">
-                            <option value="png">PNG</option>
-                            <option value="jpg">JPG</option>
-                            <option value="webp">WebP</option>
-                            <option value="svg">SVG</option>
-                        </select>
-                    </div>
-                </div>
-
-                <button type="button" id="toggleLogo" class="toggle-btn">
-                    📁 Agregar Logo (Opcional)
-                </button>
-
-                <div id="logoSection" class="logo-section hidden">
-                    <div class="form-group">
-                        <label for="logo">Seleccionar Logo</label>
-                        <input type="file" id="logo" name="logo" 
-                               accept="image/*">
+                        <label for="text">Texto o URL *</label>
+                        <input type="text" id="text" name="text" required 
+                               placeholder="https://ejemplo.com">
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="logoSize">Tamaño Logo</label>
-                            <input type="range" id="logoSize" name="logoSize" 
-                                   min="0.1" max="0.25" step="0.01" value="0.2">
-                            <span id="logoSizeValue">20%</span>
+                            <label for="size">Tamaño (px)</label>
+                            <input type="number" id="size" name="size" 
+                                   value="400" min="100" max="1000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="format">Formato</label>
+                            <select id="format" name="format">
+                                <option value="png">PNG</option>
+                                <option value="jpg">JPG</option>
+                                <option value="webp">WebP</option>
+                                <option value="svg">SVG</option>
+                            </select>
                         </div>
                     </div>
 
-                    <div class="form-row">
+                    <button type="button" id="toggleLogo" class="toggle-btn">
+                        📁 Agregar Logo (Opcional)
+                    </button>
+
+                    <div id="logoSection" class="logo-section hidden">
                         <div class="form-group">
-                            <label for="logoPaddingWidth">Borde Horizontal</label>
-                            <input type="number" id="logoPaddingWidth" name="logoPaddingWidth" 
-                                   value="15" min="0" max="50">
+                            <label for="logo">Seleccionar Logo</label>
+                            <input type="file" id="logo" name="logo" 
+                                   accept="image/*">
                         </div>
 
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="logoSize">Tamaño Logo</label>
+                                <input type="range" id="logoSize" name="logoSize" 
+                                       min="0.1" max="0.25" step="0.01" value="0.2">
+                                <span id="logoSizeValue">20%</span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="logoPaddingWidth">Borde Horizontal</label>
+                                <input type="number" id="logoPaddingWidth" name="logoPaddingWidth" 
+                                       value="15" min="0" max="50">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="logoPaddingHeight">Borde Vertical</label>
+                                <input type="number" id="logoPaddingHeight" name="logoPaddingHeight" 
+                                       value="15" min="0" max="50">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="generateBtn" class="generate-btn">
+                        🚀 Generar QR
+                    </button>
+                </form>
+            </div>
+
+            <div id="result" class="result-section hidden">
+                <h3>QR Generado</h3>
+                <div id="qrPreview"></div>
+                <div class="result-actions">
+                    <button id="downloadBtn" class="download-btn hidden">📥 Descargar QR</button>
+                    <button id="generateNewBtn" class="secondary-btn hidden">🔄 Generar Nuevo</button>
+                </div>
+            </div>
+
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Generando QR...</p>
+            </div>
+        </div>
+
+                <!-- History Tab -->
+        <div id="history-tab" class="tab-content">
+            <div class="history-section">
+                <div class="history-header">
+                    <h3>📋 Historial de QRs</h3>
+                    <div class="history-actions">
+                        <button id="refreshHistoryBtn" class="secondary-btn">🔄 Actualizar</button>
+                        <button id="clearHistoryBtn" class="danger-btn">🗑️ Limpiar Todo</button>
+                    </div>
+                </div>
+
+                <div id="historyFilters" class="filters-section">
+                    <div class="form-row">
                         <div class="form-group">
-                            <label for="logoPaddingHeight">Borde Vertical</label>
-                            <input type="number" id="logoPaddingHeight" name="logoPaddingHeight" 
-                                   value="15" min="0" max="50">
+                            <label for="formatFilter">Filtrar por formato:</label>
+                            <select id="formatFilter">
+                                <option value="">Todos los formatos</option>
+                                <option value="png">PNG</option>
+                                <option value="jpg">JPG</option>
+                                <option value="webp">WebP</option>
+                                <option value="svg">SVG</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="searchHistory">Buscar:</label>
+                            <input type="text" id="searchHistory" placeholder="Buscar en texto o URL...">
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" id="generateBtn" class="generate-btn">
-                    🚀 Generar QR
-                </button>
-            </form>
+                <div id="historyLoading" class="loading-small hidden">
+                    <div class="spinner-small"></div>
+                    <p>Cargando historial...</p>
+                </div>
+
+                <div id="historyContainer" class="history-container">
+                    <!-- Los QRs del historial se insertarán aquí dinámicamente -->
+                </div>
+
+                <div id="historyPagination" class="pagination hidden">
+                    <button id="prevPageBtn" class="pagination-btn">← Anterior</button>
+                    <span id="pageInfo" class="page-info">Página 1 de 1</span>
+                    <button id="nextPageBtn" class="pagination-btn">Siguiente →</button>
+                </div>
+
+                <div id="emptyHistory" class="empty-state hidden">
+                    <div class="empty-icon">📋</div>
+                    <h3>No hay QRs en el historial</h3>
+                    <p>Los QRs que generes aparecerán aquí</p>
+                </div>
+            </div>
         </div>
 
-        <div id="result" class="result-section hidden">
-            <h3>QR Generado</h3>
-            <div id="qrPreview"></div>
-            <button id="downloadBtn" class="download-btn hidden">📥 Descargar QR</button>
-        </div>
+        <!-- Analytics Tab -->
+        <div id="analytics-tab" class="tab-content">
+            <div class="analytics-section">
+                <h3>📊 Análisis y Estadísticas</h3>
 
-        <div id="loading" class="loading hidden">
-            <div class="spinner"></div>
-            <p>Generando QR...</p>
+                <div id="analyticsLoading" class="loading-small hidden">
+                    <div class="spinner-small"></div>
+                    <p>Cargando estadísticas...</p>
+                </div>
+
+                <div id="statsContainer" class="stats-container">
+                    <!-- Stats cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-content">
+                                <h4>Total QRs</h4>
+                                <span id="totalQRs" class="stat-number">-</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">🎨</div>
+                            <div class="stat-content">
+                                <h4>Con Logo</h4>
+                                <span id="withLogo" class="stat-number">-</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">🖼️</div>
+                            <div class="stat-content">
+                                <h4>Formato Popular</h4>
+                                <span id="popularFormat" class="stat-number">-</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">📅</div>
+                            <div class="stat-content">
+                                <h4>Último QR</h4>
+                                <span id="lastGenerated" class="stat-number">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts placeholder -->
+                    <div class="charts-container">
+                        <div class="chart-card">
+                            <h4>QRs por Formato</h4>
+                            <div id="formatChart" class="chart-placeholder">
+                                <div class="chart-content" id="formatChartContent">
+                                    <!-- Chart data will be inserted here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-card">
+                            <h4>Actividad Reciente</h4>
+                            <div id="activityChart" class="chart-placeholder">
+                                <div class="chart-content" id="activityChartContent">
+                                    <!-- Chart data will be inserted here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="emptyStats" class="empty-state hidden">
+                    <div class="empty-icon">📊</div>
+                    <h3>Sin datos suficientes</h3>
+                    <p>Genera algunos QRs para ver estadísticas</p>
+                </div>
+            </div>
         </div>
     </div>
     <script>

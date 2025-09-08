@@ -16,7 +16,7 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "blob:"], // ← ESTA ES LA LÍNEA CLAVE
+      imgSrc: ["'self'", "data:", "blob:", "https://res.cloudinary.com"], // ← ESTA ES LA LÍNEA CLAVE
       connectSrc: ["'self'"],
       fontSrc: ["'self'"],
       objectSrc: ["'none'"],
