@@ -1,20 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const qrController = require('../controllers/qrController');
-const upload = require('../middleware/upload');
-const validation = require('../middleware/validation');
+const { uploadSingle, handleUploadError } = require('../middleware/upload'); 
+const { validateQrGenerate } = require('../middleware/validation'); 
 
-// Generar nuevo QR con Cloudinary (nueva funcionalidad)
 router.post('/generate', 
-  upload.single('logo'), 
-  validation.validateQRRequest, 
+  uploadSingle,  
+  handleUploadError, 
+  validateQrGenerate, 
   qrController.generateQR
 );
 
-// Generar QR directo sin Cloudinary (mantiene comportamiento original)
 router.post('/generate-direct', 
-  upload.single('logo'), 
-  validation.validateQRRequest, 
+  uploadSingle,  
+  handleUploadError,  
+  validateQrGenerate, 
   qrController.generateQRDirect
 );
 
@@ -24,9 +24,6 @@ router.get('/history', qrController.getHistory);
 // Obtener estadísticas
 router.get('/stats', qrController.getStats);
 
-// Generar nueva sesión
-router.post('/session', qrController.generateSession);
-
 // Eliminar QR específico
 router.delete('/:qrId', qrController.deleteQR);
 
@@ -34,7 +31,6 @@ router.delete('/:qrId', qrController.deleteQR);
 router.delete('/clear-history', qrController.clearHistory);
 
 // Proxy para preview de imágenes
-// router.get('/preview/:qrId', qrController.getQRPreview);
-router.get('/preview/*', qrController.getQRPreview);
+ router.get('/preview/:qrId', qrController.getQRPreview);
 
 module.exports = router;

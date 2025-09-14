@@ -110,18 +110,7 @@ const hasLogo = req.file !== undefined;
 
     console.log(`✅ QR subido a Cloudinary: ${uploadResult.data.url}`);
  
-
-    /* // Configurar headers de respuesta
-    const contentType = fileHelper.getContentType(format);
-    res.set({
-      'Content-Type': contentType,
-      'Content-Disposition': `attachment; filename="${fileName}"`
-    });
-
-    // Enviar respuesta
-    res.send(finalData); */
-
-        // Responder con información del QR y URL de Cloudinary
+    // Responder con información del QR y URL de Cloudinary
     res.json({
       success: true,
       data: {
@@ -457,11 +446,11 @@ async function getQRPreview(req, res) {
 }
 
 module.exports = {
-  generateQR,       // Nueva versión con Cloudinary
-  generateQRDirect,   // Versión original sin Cloudinary
+  generateQR,       
+  generateQRDirect,   
   getHistory,
   deleteQR,
   getStats,
-  clearHistory,      // Nueva función para limpiar todo
+  clearHistory,
   getQRPreview 
 };

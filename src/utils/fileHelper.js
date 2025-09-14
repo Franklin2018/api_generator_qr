@@ -252,4 +252,3 @@ module.exports.fileExists = FileHelper.fileExists;
 module.exports.getFileInfo = FileHelper.getFileInfo;
 module.exports.formatFileSize = FileHelper.formatFileSize;
 module.exports.generateSessionId = () => fileHelper.generateSessionId();
-

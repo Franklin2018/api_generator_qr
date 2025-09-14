@@ -63,7 +63,7 @@ class CloudinaryService {
       
       const result = await cloudinary.search
         .expression(searchQuery)
-        .sort_by([['created_at', 'desc']])
+        .sort_by('created_at', 'desc')
         .max_results(limit)
         .with_field('context')
         .execute();

@@ -16,7 +16,7 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "blob:", "https://res.cloudinary.com"], // ← ESTA ES LA LÍNEA CLAVE
+      imgSrc: ["'self'", "data:", "blob:", "https://res.cloudinary.com"],
       connectSrc: ["'self'"],
       fontSrc: ["'self'"],
       objectSrc: ["'none'"],
@@ -28,29 +28,18 @@ app.use(helmet({
 app.use(cors());
 app.use(morgan('combined'));
 
+// Parsear JSON y URL encoded
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Servir archivos estáticos
 app.use(express.static(path.join(__dirname, '../public')));
 // Servir archivos estáticos (para ver QRs generados)
 app.use('/generated', express.static(path.join(__dirname, '../generated')));
 
-
-// Importar middlewares y controladores
-const { uploadSingle, handleUploadError } = require('./middleware/upload');
-const { validateQrGenerate } = require('./middleware/validation');
-const qrController = require('./controllers/qrController');
-
-// Rutas de la API
-app.post('/api/qr/generate', 
-  uploadSingle,
-  handleUploadError,
-  validateQrGenerate,
-  qrController.generateQR
-);
-
-// Parsear JSON y URL encoded
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
+// Importar y montar las rutas de la API (ESTO ES LO NUEVO)
+const qrRoutes = require('./routes/qrRoutes');
+app.use('/api/qr', qrRoutes);
 
 // Ruta de health check
 app.get('/health', (req, res) => {
@@ -68,7 +57,11 @@ app.get('/', (req, res) => {
     version: '1.0.0',
     endpoints: [
       'GET /health - Health check',
-      'POST /api/qr/generate - Generate QR code'
+      'POST /api/qr/generate - Generate QR code',
+      'GET /api/qr/history - Get QR history',
+      'GET /api/qr/stats - Get statistics',
+      'DELETE /api/qr/:qrId - Delete specific QR',
+      'DELETE /api/qr/clear-history - Clear all history'
     ]
   });
 });
